@@ -1,0 +1,203 @@
+//Cluster view
+"data":{
+    "values":[
+        {"nodeID":"a","parent":"b","score":"c","startTime":"d","endTime":"f"}
+    ]
+}
+{
+    "param":[
+        {
+            "name":"highlightByCluster",
+            "select":{
+                "type":"point",
+                "field":"nodeID"
+            },
+            "on":"mouseover"
+        },
+        {
+            "name":"selectByCluster",
+            "select":{
+                "type":"point",
+                "field":"nodeID"
+            },
+            "on":"click"
+        },
+        {
+            "name":"addOrRemoveStreamByCluster",
+            "select":{
+                "type":"point",
+                "field":"nodeID"
+            },
+            "on":"dbclick"
+        }
+    ],
+    "transform":{
+        "param":[
+            "selectByCluster","addOrRemoveByCluster",
+            "selectByMDS","addOrRemoveByMDS",
+            "selectByThreads","addOrRemoveByThreads",
+        ]
+    },
+    "mark":{"type":["tree","circle"]},
+    "encoding":{
+        "parent":"parent",
+        "color":"score",
+        "startArc":"startTime",
+        "endArc":"endTime"
+    }
+}
+
+//MDS View
+"data":{
+    "values":[
+        {"nodeID":"a","score":"b","startTime":"c","endTime":"d","x":"e","y":"f"}
+    ]
+}
+{
+    "param":[
+        {
+            "name":"highlightByMDS",
+            "select":{
+                "type":"point",
+                "field":"nodeID"
+            },
+            "on":"mouseover"
+        },
+        {
+            "name":"selectByMDS",
+            "select":{
+                "type":"point",
+                "field":"nodeID"
+            },
+            "on":"click"
+        },
+        {
+            "name":"addOrRemoveStreamByMDS",
+            "select":{
+                "type":"point",
+                "field":"nodeID"
+            },
+            "on":"dbclick"
+        }
+    ],
+    "transform":{
+        "param":[
+            "highlightByCluster",
+            "highlightByMDS",
+            "highlightByThreads",
+            "addOrRemoveStreamByCluster",//change circle size
+            "addOrRemoveStreamByMDS",
+            "addOrRemoveStreamByThreads"
+        ]
+    },
+    "mark":{"type":["circle"]},
+    "encoding":{
+        "color":"score",
+        "startArc":"startTime",
+        "endArc":"endTime"
+    },
+}
+
+//Treads view
+"layers":[
+    {//widget
+        "mark":"widget",
+        "param":[
+            {
+                "name":"threadsWidget",
+                "on":"click"
+            }
+        ]
+    },
+    {//timeline
+        "param":[
+            {
+                "name":"timeBrush",
+                "select":{
+                    "field":"time"
+                }
+            }
+        ],
+        "mark":"line",
+        "encoding":{
+            "x":"time",
+            "ticks":"time"
+        }
+    },
+    {//Circle view
+        "params":[
+            {
+                {
+                    "name":"highlightByThreads",
+                    "select":{
+                        "type":"point",
+                        "field":"nodeID"
+                    },
+                    "on":"mouseover"
+                },
+                {
+                    "name":"selectByTheads",
+                    "select":{
+                        "type":"point",
+                        "field":"nodeID"
+                    },
+                    "on":"click"
+                },
+                {
+                    "name":"addOrRemoveByThreads",
+                    "select":{
+                        "type":"point",
+                        "field":"nodeID"
+                    },
+                    "on":"dblick"
+                }
+            }
+        ],
+        "transform":{
+            "params":[
+                "threadsWidget","timeBrush",
+                "selectByCluster","addOrRemoveByCluster",
+                "selectByMDS","addOrRemoveByMDS",
+                "selectByThreads","addOrRemoveByThreads",
+            ]
+        },
+        "mark":{"type":"circle"},
+        "encoding":{
+            "x":"time",
+            "y":"...",
+            "color":"score"
+        }
+    }
+],
+
+//Features View
+{
+    "transform":{
+        "params":[
+            "addOrRemoveByCluster",
+            "addOrRemoveByMDS",
+            "addOrRemoveByThreads"
+        ]
+    }
+    "mark":"rect",
+    "encoding":{
+        "x":{"field":"state"},
+        "y":{"field":"..."},
+        "color":{"field":"count"}
+    }
+}
+
+//Tweets View
+{
+    "transform":{
+        "param":[
+            "selectByCluster",
+            "selectByMDS",
+            "selectByThreads",
+        ]
+    }
+    "mark":"text",
+    "encoding":{
+        "..."
+    }
+}
